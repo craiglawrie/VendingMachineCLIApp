@@ -15,46 +15,111 @@ namespace Capstone.Classes
         {
             while (true)
             {
-				
-				int mainMenuInput = Menu(MainMenuOptions);
+
+                int mainMenuInput = Menu(MainMenuOptions, null);
                 int purchaseMenuInput;
-				if (mainMenuInput == 1)
-				{
-					DisplayVendingItems();
-				}
-				else if (mainMenuInput == 2) 
+                if (mainMenuInput == 1)
                 {
-                    purchaseMenuInput = Menu(PurchaseMenuOptions);
+                    DisplayVendingItems();
+                }
+                else if (mainMenuInput == 2)
+                {
+                    while (true)
+                    {
+                        string currentBalanceString = $"Current Money Provided: {vendingMachine.Balance.ToString("C")}";
+                        purchaseMenuInput = Menu(PurchaseMenuOptions, currentBalanceString);
+                        ManagePurchaseMenu(purchaseMenuInput);
+                        if (purchaseMenuInput == 3 || purchaseMenuInput == 4) break;
+                    }
                 }
 
             }
 
         }
 
+        private void ManagePurchaseMenu(int purchaseMenuInput)
+        {
+            Console.Clear();
+            if (purchaseMenuInput == 1)
+            {
+                // Feed money
+                int feedAmount;
+                do
+                {
+                    feedAmount = GetInputInteger("Enter the number of dollars to feed (0 to finish): $");
+                    vendingMachine.FeedMoney(feedAmount);
+                    if (feedAmount != 0)
+                    {
+                        Console.WriteLine($"Deposit successful. Balance: {vendingMachine.Balance.ToString("C")}");
+                        Console.WriteLine();
+                    }
+                } while (feedAmount != 0);
+            }
+            else if (purchaseMenuInput == 2)
+            {
+                // Select product
+
+            }
+            else if (purchaseMenuInput == 3)
+            {
+                // Finish transaction
+
+            }
+            else if (purchaseMenuInput == 4)
+            {
+                // Cancel transaction
+                /*
+                 * Get change for 0 cost item.
+                 * 
+                 * 
+                 * 
+                 */
+                //vendingMachine.ReturnChange();
+            }
+        }
+
+        private int GetInputInteger(string prompt)
+        {
+            int userInput = -1;
+            string inputString = "";
+
+            do
+            {
+                Console.Write(prompt);
+                inputString = Console.ReadLine();
+            } while (!int.TryParse(inputString, out userInput) || userInput < 0);
+
+            return userInput;
+        }
+
         private void DisplayVendingItems()
         {
-			Console.Clear();
+            Console.Clear();
 
-			foreach (var kvp in vendingMachine.Inventory)
-			{
-				Console.WriteLine($"{kvp.Key} {kvp.Value.Name} ${kvp.Value.Cost}");
-			}
-			Console.WriteLine();
-			Console.WriteLine("Press ENTER to resturn to main menu");
-			Console.ReadLine();
-		}
+            string[] slots = vendingMachine.Slots;
+            foreach (string slot in slots)
+            {
+                VendableItems item = vendingMachine.GetItemAtSlot(slot);
+                Console.WriteLine($"{slot} {item.Name} ${item.Cost}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to return to main menu");
+            Console.ReadLine();
+        }
 
-        private int Menu(string[] menuOptions)
+        private int Menu(string[] menuOptions, string extraString)
         {
-			Console.Clear();
+            Console.Clear();
 
-			int userSelection = 0;
+            int userSelection = 0;
             string userInput = "";
 
             for (int i = 0; i < menuOptions.Length; i++)
             {
                 Console.WriteLine($"({i + 1}) {menuOptions[i]}");
             }
+
+            if (!string.IsNullOrEmpty(extraString)) Console.WriteLine(extraString);
 
             Console.WriteLine();
 
@@ -87,7 +152,8 @@ namespace Capstone.Classes
                 {
                     "Feed Money",
                     "Select Product",
-                    "Finish Transation"
+                    "Finish Transation",
+                    "Cancel"
                 };
             }
         }

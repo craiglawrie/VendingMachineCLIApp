@@ -41,6 +41,7 @@ namespace Capstone.Classes
 
                 item = Inventory[slot];
                 Inventory[slot].SellOne();
+                Balance -= Inventory[slot].Cost;
                 Console.WriteLine(item.ConsumeMessage);
             }
             catch(VendingMachineException e)
