@@ -48,11 +48,16 @@
     <Compile Include="Classes\ChipItem.cs" />
     <Compile Include="Classes\CandyItem.cs" />
     <Compile Include="Classes\VendableItems.cs" />
+    <Compile Include="Classes\VendingIO.cs" />
+    <Compile Include="Classes\VendingMachine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="vendingmachine.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

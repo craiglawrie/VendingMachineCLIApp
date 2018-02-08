@@ -8,7 +8,7 @@ namespace Capstone.Classes
 {
     public class ChipItem : VendableItems
     {
-        public ChipItem(decimal cost, string productCode, string name) : base(cost, productCode, name)
+        public ChipItem(string productCode, string name, decimal cost) : base(productCode, name, cost)
         {
         }
 

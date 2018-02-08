@@ -19,7 +19,7 @@ namespace Capstone.Classes
         /// <param name="cost">The item cost.</param>
         /// <param name="productCode">The item product code. I.e. "A4".</param>
         /// <param name="name">The item name.</param>
-        public VendableItems(decimal cost, string productCode, string name)
+        public VendableItems(string productCode, string name, decimal cost)
         {
             this.Cost = cost;
             this.ProductCode = productCode;
