@@ -15,21 +15,29 @@ namespace Capstone.Classes
             while (true)
             {
                 int mainMenuInput = Menu(MainMenuOptions);
+                int purchaseMenuInput;
                 if (mainMenuInput == 1)
                 {
-
+                    DisplayVendingItems();
                 }
                 else
                 {
-
+                    purchaseMenuInput = Menu(PurchaseMenuOptions);
                 }
 
             }
 
         }
 
+        private void DisplayVendingItems()
+        {
+            
+        }
+
         private int Menu(string[] menuOptions)
         {
+            Console.Clear();
+
             int userSelection = 0;
             string userInput = "";
 
