@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Capstone.Classes;
 
 namespace Capstone.Classes
 {
@@ -14,13 +15,14 @@ namespace Capstone.Classes
         {
             while (true)
             {
-                int mainMenuInput = Menu(MainMenuOptions);
+				
+				int mainMenuInput = Menu(MainMenuOptions);
                 int purchaseMenuInput;
-                if (mainMenuInput == 1)
-                {
-                    DisplayVendingItems();
-                }
-                else
+				if (mainMenuInput == 1)
+				{
+					DisplayVendingItems();
+				}
+				else if (mainMenuInput == 2) 
                 {
                     purchaseMenuInput = Menu(PurchaseMenuOptions);
                 }
@@ -31,14 +33,22 @@ namespace Capstone.Classes
 
         private void DisplayVendingItems()
         {
-            
-        }
+			Console.Clear();
+
+			foreach (var kvp in vendingMachine.Inventory)
+			{
+				Console.WriteLine($"{kvp.Key} {kvp.Value.Name} ${kvp.Value.Cost}");
+			}
+			Console.WriteLine();
+			Console.WriteLine("Press ENTER to resturn to main menu");
+			Console.ReadLine();
+		}
 
         private int Menu(string[] menuOptions)
         {
-            Console.Clear();
+			Console.Clear();
 
-            int userSelection = 0;
+			int userSelection = 0;
             string userInput = "";
 
             for (int i = 0; i < menuOptions.Length; i++)
