@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Reflection;
+//using System.Reflection;
 
 namespace Capstone.Classes
 {
-    public class VendingIO
+    public class VendingInput
     {
 
         private static Dictionary<string, Type> itemTypes = new Dictionary<string, Type>
@@ -32,7 +32,7 @@ namespace Capstone.Classes
             {"Triplemint", typeof(GumItem) }
         };
 
-        public Dictionary<string, VendableItems> ReadInput(string inputFile)
+        public static Dictionary<string, VendableItems> RestockFromInputFile(string inputFile)
         {
             Dictionary<string, VendableItems> inventory = new Dictionary<string, VendableItems>();
 
@@ -40,15 +40,17 @@ namespace Capstone.Classes
             {
                 using (StreamReader sr = new StreamReader(inputFile))
                 {
-                    string[] itemDetails = sr.ReadLine().Split('|');
-                    Type type = itemTypes[itemDetails[1]];
-                    ConstructorInfo ctor = type.GetConstructor(new[] { typeof(decimal), typeof(string), typeof(string) });
-                    Object item = ctor.Invoke(new object[] { itemDetails[0], itemDetails[1], decimal.Parse(itemDetails[2]) });
+                    while (!sr.EndOfStream)
+                    {
+                        string[] itemDetails = sr.ReadLine().Split('|');
+                        Type type = itemTypes[itemDetails[1]];
+                        Object item = Activator.CreateInstance(type, new object[] { itemDetails[0], itemDetails[1], decimal.Parse(itemDetails[2]) });
 
-                    inventory[itemDetails[0]] = (VendableItems)item;
+                        inventory[itemDetails[0]] = (VendableItems)item;
+                    }
                 }
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 Console.WriteLine("Something went wrong with reading the input file.");
                 Console.WriteLine(e.Message);

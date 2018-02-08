@@ -9,8 +9,7 @@ namespace Capstone.Classes
 {
     public class VendingMachine
     {
-
+        public Dictionary<string, VendableItems> Inventory { get; } = VendingInput.RestockFromInputFile("vendingmachine.csv");
         
-
     }
 }

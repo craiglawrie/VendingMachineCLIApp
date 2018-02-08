@@ -11,14 +11,9 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-
-            VendingIO vio = new VendingIO();
-            Dictionary<string, VendableItems> Inventory = vio.ReadInput("vendingmachine.csv");
-
-
-            Console.WriteLine("hello!");
+            VendingMachineCLI cli = new VendingMachineCLI();
+            cli.Run();
         }
-
     }
 }
 

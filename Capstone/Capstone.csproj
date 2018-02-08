@@ -48,8 +48,9 @@
     <Compile Include="Classes\ChipItem.cs" />
     <Compile Include="Classes\CandyItem.cs" />
     <Compile Include="Classes\VendableItems.cs" />
-    <Compile Include="Classes\VendingIO.cs" />
+    <Compile Include="Classes\VendingInput.cs" />
     <Compile Include="Classes\VendingMachine.cs" />
+    <Compile Include="Classes\VendingMachineCLI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
