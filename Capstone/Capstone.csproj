@@ -47,10 +47,14 @@
     <Compile Include="Classes\DrinkItem.cs" />
     <Compile Include="Classes\ChipItem.cs" />
     <Compile Include="Classes\CandyItem.cs" />
+    <Compile Include="Classes\InvalidSlotException.cs" />
+    <Compile Include="Classes\InsufficientFundsException.cs" />
+    <Compile Include="Classes\OutOfStockException.cs" />
     <Compile Include="Classes\VendableItems.cs" />
     <Compile Include="Classes\VendingInput.cs" />
     <Compile Include="Classes\VendingMachine.cs" />
     <Compile Include="Classes\VendingMachineCLI.cs" />
+    <Compile Include="Classes\VendingMachineException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
