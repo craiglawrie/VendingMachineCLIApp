@@ -10,6 +10,7 @@ namespace Capstone.Classes
     internal class VendingMachineCLI
     {
         private VendingMachine vendingMachine = new VendingMachine();
+        private string ResponsiveYumText { get; set; }
 
         public void Run()
         {
@@ -40,8 +41,10 @@ namespace Capstone.Classes
 
         private void ManagePurchaseMenu(int purchaseMenuInput)
         {
-			string allYumText = "";
+			
+
 			Console.Clear();
+
             if (purchaseMenuInput == 1)
             {
                 // Feed money
@@ -67,7 +70,7 @@ namespace Capstone.Classes
 
 				if (item != null)
 				{
-					allYumText += item.ConsumeMessage + "\n";
+					ResponsiveYumText += item.ConsumeMessage + "\n";
 					Console.WriteLine();
 					Console.WriteLine("Press ENTER to continue");
 					Console.ReadLine();
@@ -78,10 +81,12 @@ namespace Capstone.Classes
 				Change change = vendingMachine.ReturnChange();
 
 				// Finish transaction
-				Console.WriteLine(allYumText);
+				Console.WriteLine(ResponsiveYumText);
 				Console.WriteLine();
 				Console.WriteLine("Press ENTER to continue");
 				Console.ReadLine();
+
+                ResponsiveYumText = "";
 
 			}
         }
