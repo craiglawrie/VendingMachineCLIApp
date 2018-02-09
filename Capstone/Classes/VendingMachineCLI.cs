@@ -13,6 +13,7 @@ namespace Capstone.Classes
 
         public void Run()
         {
+
             while (true)
             {
 
@@ -39,7 +40,8 @@ namespace Capstone.Classes
 
         private void ManagePurchaseMenu(int purchaseMenuInput)
         {
-            Console.Clear();
+			string allYumText = "";
+			Console.Clear();
             if (purchaseMenuInput == 1)
             {
                 // Feed money
@@ -57,14 +59,31 @@ namespace Capstone.Classes
             }
             else if (purchaseMenuInput == 2)
             {
-                // Select product
+				
+				// Select product
+				Console.Write("Please enter desired selection: ");
+				string selection = Console.ReadLine();
+				VendableItems item = vendingMachine.Purchase(selection);
 
+				if (item != null)
+				{
+					allYumText += item.ConsumeMessage + "\n";
+					Console.WriteLine();
+					Console.WriteLine("Press ENTER to continue");
+					Console.ReadLine();
+				}
             }
             else if (purchaseMenuInput == 3)
             {
-                // Finish transaction
+				Change change = vendingMachine.ReturnChange();
 
-            }
+				// Finish transaction
+				Console.WriteLine(allYumText);
+				Console.WriteLine();
+				Console.WriteLine("Press ENTER to continue");
+				Console.ReadLine();
+
+			}
         }
 
         private int GetInputInteger(string prompt)
@@ -141,8 +160,7 @@ namespace Capstone.Classes
                 {
                     "Feed Money",
                     "Select Product",
-                    "Finish Transation",
-                    "Cancel"
+                    "Finish Transation"
                 };
             }
         }
