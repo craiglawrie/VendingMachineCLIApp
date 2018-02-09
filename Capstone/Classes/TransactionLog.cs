@@ -31,7 +31,7 @@ namespace Capstone.Classes
 				using (StreamWriter sw = new StreamWriter(FilePath, true))
 				{
 					string actionStamp = CurrentDate + " FEED MONEY:";
-					sw.WriteLine($"{actionStamp,-36} {amount.ToString("C"),-10} {finalBalance.ToString("C")}");
+					sw.WriteLine($"{actionStamp,-50} {amount.ToString("C"),-10} {finalBalance.ToString("C")}");
 				}
 			}
 			catch (IOException e)
@@ -54,8 +54,8 @@ namespace Capstone.Classes
 			{
 				using (StreamWriter sw = new StreamWriter(FilePath, true))
 				{
-					string actionStamp = CurrentDate + " " + product.Substring(0,8) + " " + slot;
-					sw.WriteLine($"{actionStamp,-36} {initialBalance.ToString("C"),-10} {finalBalance.ToString("C")}");
+					string actionStamp = CurrentDate + " " + product + " " + slot;
+					sw.WriteLine($"{actionStamp,-50} {initialBalance.ToString("C"),-10} {finalBalance.ToString("C")}");
 				}
 			}
 			catch (IOException e)
@@ -77,7 +77,7 @@ namespace Capstone.Classes
 				{
 					string actionStamp = CurrentDate + " GIVE CHANGE: ";
 					decimal finalBalance = 0M;
-					sw.WriteLine($"{actionStamp,-36} {remainingBalance.ToString("C"),-10} {finalBalance.ToString("C")}");
+					sw.WriteLine($"{actionStamp,-50} {remainingBalance.ToString("C"),-10} {finalBalance.ToString("C")}");
 				}
 			}
 			catch (IOException e)

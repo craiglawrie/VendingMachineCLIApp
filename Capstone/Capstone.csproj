@@ -57,6 +57,7 @@
     <Compile Include="Classes\VendingMachine.cs" />
     <Compile Include="Classes\VendingMachineCLI.cs" />
     <Compile Include="Classes\VendingMachineException.cs" />
+    <Compile Include="Classes\VendingSalesReport.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
