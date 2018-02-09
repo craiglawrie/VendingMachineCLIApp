@@ -18,7 +18,7 @@ namespace Capstone.Classes
                 return Inventory.Keys.ToArray();
             }
         }
-
+        
         public void FeedMoney(int dollars)
         {
             Balance += dollars;
