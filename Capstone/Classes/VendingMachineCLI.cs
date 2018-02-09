@@ -100,6 +100,8 @@ namespace Capstone.Classes
             {
                 ResponsiveYumText += item.ConsumeMessage + "\n";
                 Console.WriteLine();
+                Console.WriteLine($"Dispensing {item.Name}...");
+                Console.WriteLine();
                 Console.WriteLine("Press ENTER to continue");
                 Console.ReadLine();
             }
