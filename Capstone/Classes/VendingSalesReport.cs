@@ -14,7 +14,7 @@ namespace Capstone.Classes
         {
             Regex balance = new Regex(@"\$\d*\,?\d+\.\d{2}");
             Regex date = new Regex($"^{month:00}");
-            Regex productName = new Regex(@"M\s[\w\s\d]+\w\d");
+            Regex productName = new Regex(@"M\s[\w\s\d\.]+\w\d");
             Dictionary<string, int> salesLog = new Dictionary<string, int>();
 
             decimal amountTendered = 0M;

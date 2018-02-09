@@ -43,6 +43,10 @@ namespace Capstone.Classes
 						if (purchaseMenuInput == 3) break;
 					}
 				}
+				else if (mainMenuInput == 3)
+				{
+					break;
+				}
 			}
 		}
 
@@ -197,17 +201,31 @@ namespace Capstone.Classes
 			Console.Clear();
 
 			string[] slots = vendingMachine.Slots;
-
+			Console.WriteLine("----------------------------------------------------------------------------------------");
 			foreach (char c in "ABCD".ToCharArray())
 			{
-				Console.WriteLine();
+				//Console.WriteLine();
+
 
 				for (int s = 1; s < 5; s++)
 				{
 					string address = c.ToString() + s.ToString();
 
 					VendableItems item = vendingMachine.GetItemAtSlot(address);
-					Console.Write($"|{address,-20}|");
+					
+
+					if (item.AmountRemaining > 0)
+					{
+						Console.Write($"|   {address,-17}|");
+					}
+					else
+					{
+						Console.Write("|");
+						Console.ForegroundColor = ConsoleColor.DarkGray;
+						Console.Write($"   {address,-17}");
+						Console.ForegroundColor = ConsoleColor.White;
+						Console.Write("|");
+					}
 				}
 				Console.WriteLine();
 
@@ -216,7 +234,19 @@ namespace Capstone.Classes
 					string address = c.ToString() + s.ToString();
 
 					VendableItems item = vendingMachine.GetItemAtSlot(address);
-					Console.Write($"|{item.Name,-20}|");
+					
+					if (item.AmountRemaining > 0)
+					{
+						Console.Write($"| {item.Name,-19}|");
+					}
+					else
+					{
+						Console.Write("|");
+						Console.ForegroundColor = ConsoleColor.DarkGray;
+						Console.Write($" {item.Name,-19}");
+						Console.ForegroundColor = ConsoleColor.White;
+						Console.Write("|");
+					}
 				}
 				Console.WriteLine();
 
@@ -227,7 +257,7 @@ namespace Capstone.Classes
 					VendableItems item = vendingMachine.GetItemAtSlot(address);
 					if (item.AmountRemaining > 0)
 					{
-						Console.Write($"|{item.Cost.ToString("C"),-20}|");
+						Console.Write($"|  {item.Cost.ToString("C"),-18}|");
 					}
 					else
 					{
@@ -239,7 +269,7 @@ namespace Capstone.Classes
 					}
 				}
 				Console.WriteLine();
-				Console.WriteLine("--------------------------------------------------------------------------------------");
+				Console.WriteLine("----------------------------------------------------------------------------------------");
 			}
 
 
@@ -289,7 +319,8 @@ namespace Capstone.Classes
 				return new string[]
 				{
 					"Display Vending Machine Items",
-					"Purchase"
+					"Purchase",
+					"Quit"
 				};
 			}
 		}
@@ -309,7 +340,5 @@ namespace Capstone.Classes
 				};
 			}
 		}
-
-
 	}
 }
