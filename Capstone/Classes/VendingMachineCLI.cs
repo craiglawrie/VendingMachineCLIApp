@@ -29,7 +29,7 @@ namespace Capstone.Classes
                         string currentBalanceString = $"Current Money Provided: {vendingMachine.Balance.ToString("C")}";
                         purchaseMenuInput = Menu(PurchaseMenuOptions, currentBalanceString);
                         ManagePurchaseMenu(purchaseMenuInput);
-                        if (purchaseMenuInput == 3 || purchaseMenuInput == 4) break;
+                        if (purchaseMenuInput == 3) break;
                     }
                 }
 
@@ -64,17 +64,6 @@ namespace Capstone.Classes
             {
                 // Finish transaction
 
-            }
-            else if (purchaseMenuInput == 4)
-            {
-                // Cancel transaction
-                /*
-                 * Get change for 0 cost item.
-                 * 
-                 * 
-                 * 
-                 */
-                //vendingMachine.ReturnChange();
             }
         }
 
