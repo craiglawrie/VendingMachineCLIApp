@@ -7,17 +7,26 @@ using Capstone.Classes;
 
 namespace Capstone.Classes
 {
-    internal class VendingMachineCLI
+    public class VendingMachineCLI
     {
+        /// <summary>
+        /// The vending machine managed and displayed by this class.
+        /// </summary>
         private VendingMachine vendingMachine = new VendingMachine();
+
+        /// <summary>
+        /// A string used for displaying "consume messages" only when the transaction is closed
+        /// and change is given.
+        /// </summary>
         private string ResponsiveYumText { get; set; }
 
+        /// <summary>
+        /// Begins the vending machine processes.
+        /// </summary>
         public void Run()
         {
-
             while (true)
             {
-
                 int mainMenuInput = Menu(MainMenuOptions, null);
                 int purchaseMenuInput;
                 if (mainMenuInput == 1)
@@ -34,67 +43,105 @@ namespace Capstone.Classes
                         if (purchaseMenuInput == 3) break;
                     }
                 }
-
             }
-
         }
 
+        /// <summary>
+        /// Acts on the purchase menu selection from the user.
+        /// </summary>
+        /// <param name="purchaseMenuInput"></param>
         private void ManagePurchaseMenu(int purchaseMenuInput)
         {
-
-
             Console.Clear();
 
-            if (purchaseMenuInput == 1)
+            if (purchaseMenuInput == 1) // FEED MONEY
             {
-                // Feed money
-                int feedAmount;
-                do
-                {
-                    feedAmount = GetInputPositiveInteger("Enter the number of dollars to feed (ENTER when finished): $");
-                   
-                    if (feedAmount != 0)
-                    {
-						vendingMachine.FeedMoney(feedAmount);
-						Console.WriteLine($"Deposit successful. Balance: {vendingMachine.Balance.ToString("C")}");
-                        Console.WriteLine();
-                    }
-                } while (feedAmount != 0);
+                FeedMoneyUntilCancel();
             }
-            else if (purchaseMenuInput == 2)
+            else if (purchaseMenuInput == 2) // SELECT PRODUCT
             {
-
-                // Select product
-                Console.Write("Please enter desired selection: ");
-                string selection = Console.ReadLine();
-                VendableItems item = vendingMachine.Purchase(selection);
-
-                if (item != null)
-                {
-                    ResponsiveYumText += item.ConsumeMessage + "\n";
-                    Console.WriteLine();
-                    Console.WriteLine("Press ENTER to continue");
-                    Console.ReadLine();
-                }
+                string selectedItem = GetUserSelectedProduct();
+                ProcessPurchaseOfSelectedProduct(selectedItem);
             }
-            else if (purchaseMenuInput == 3)
+            else if (purchaseMenuInput == 3) // FINISH TRANSACTION
             {
                 Change change = vendingMachine.ReturnChange();
+                WriteChangeMessage(change);
+            }
+        }
 
-                // Finish transaction
-                Console.WriteLine(ResponsiveYumText);
-                Console.WriteLine();
-                Console.WriteLine("Please remember to take your change:");
-                Console.WriteLine($"{change.Quarters} Quarter(s), {change.Dimes} Dime(s), {change.Nickels} Nickel(s)");
+        /// <summary>
+        /// Allows the user to deposit money into the vending machine in whole dollar amounts.
+        /// </summary>
+        private void FeedMoneyUntilCancel()
+        {
+            int feedAmount;
+            do
+            {
+                feedAmount = GetInputPositiveInteger("Enter the number of dollars to feed (ENTER when finished): $");
+
+                if (feedAmount != 0)
+                {
+                    vendingMachine.FeedMoney(feedAmount);
+                    Console.WriteLine($"Deposit successful. Balance: {vendingMachine.Balance.ToString("C")}");
+                    Console.WriteLine();
+                }
+            } while (feedAmount != 0);
+        }
+
+        /// <summary>
+        /// Purchases the selected product, if valid.
+        /// </summary>
+        /// <param name="selection">The user input product code / "slot".</param>
+        private void ProcessPurchaseOfSelectedProduct(string selection)
+        {
+            VendableItems item = vendingMachine.Purchase(selection);
+            if (item != null)
+            {
+                ResponsiveYumText += item.ConsumeMessage + "\n";
                 Console.WriteLine();
                 Console.WriteLine("Press ENTER to continue");
                 Console.ReadLine();
-
-                ResponsiveYumText = "";
-
             }
         }
 
+        /// <summary>
+        /// Gets a string input from the user, for identifying a product
+        /// by its product code / "slot".
+        /// </summary>
+        /// <returns></returns>
+        private string GetUserSelectedProduct()
+        {
+            Console.Write("Please enter desired selection: ");
+            return Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Writes a message to the user after completing purchase.
+        /// Provides munchy, crunchy, chewie, gulpy yums, resets the
+        /// list of those yums, and provides coin distribution of change.
+        /// </summary>
+        /// <param name="change"></param>
+        private void WriteChangeMessage(Change change)
+        {
+            Console.WriteLine(ResponsiveYumText);
+            Console.WriteLine();
+            Console.WriteLine("Please remember to take your change:");
+            Console.WriteLine($"{change.Quarters} Quarter(s), {change.Dimes} Dime(s), {change.Nickels} Nickel(s)");
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to continue");
+            Console.ReadLine();
+
+            ResponsiveYumText = "";
+        }
+
+        /// <summary>
+        /// Prompts the user for a positive integer. The prompt string must be provided.
+        /// There is no upper limit on the integer, except int.MaxValue. This can be
+        /// used for feeding dollars or in response to menus.
+        /// </summary>
+        /// <param name="prompt"></param>
+        /// <returns></returns>
         private int GetInputPositiveInteger(string prompt)
         {
             int userInput = 0;
@@ -110,6 +157,10 @@ namespace Capstone.Classes
             return userInput;
         }
 
+        /// <summary>
+        /// Displays vending machine inventory as a list. Items with no remaining
+        /// stock are displayed as "SOLD OUT!"
+        /// </summary>
         private void DisplayVendingItems()
         {
             Console.Clear();
@@ -134,6 +185,12 @@ namespace Capstone.Classes
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// Provides a menu to the user and prompts for their selection.
+        /// </summary>
+        /// <param name="menuOptions">A list of options to select from.</param>
+        /// <param name="extraString">A message after the menu.</param>
+        /// <returns></returns>
         private int Menu(string[] menuOptions, string extraString)
         {
             Console.Clear();
@@ -159,6 +216,9 @@ namespace Capstone.Classes
             return userSelection;
         }
 
+        /// <summary>
+        /// The array of options in the main menu.
+        /// </summary>
         private string[] MainMenuOptions
         {
             get
@@ -171,6 +231,9 @@ namespace Capstone.Classes
             }
         }
 
+        /// <summary>
+        /// The array of options in the purchase menu.
+        /// </summary>
         private string[] PurchaseMenuOptions
         {
             get

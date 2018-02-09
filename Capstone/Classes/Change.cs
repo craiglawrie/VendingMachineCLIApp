@@ -12,6 +12,9 @@ namespace Capstone.Classes
 		private const decimal DIME_VALUE = 0.10M;
 		private const decimal NICKEL_VALUE = 0.05M;
 
+        /// <summary>
+        /// The number of nickels in the change, given minimum total number of coins.
+        /// </summary>
 		public int Nickels
 		{
 			get
@@ -20,6 +23,10 @@ namespace Capstone.Classes
 
 			}
 		}
+
+        /// <summary>
+        /// The number of dimes in the change, given minimum total number of coins.
+        /// </summary>
 		public int Dimes
 		{
 			get
@@ -27,6 +34,10 @@ namespace Capstone.Classes
 				return (int)((Total - Quarters * QUARTER_VALUE) / (DIME_VALUE));
 			}
 		}
+
+        /// <summary>
+        /// The number of quarters in the change, given minimum total number of coins.
+        /// </summary>
 		public int Quarters
 		{
 			get
@@ -35,9 +46,16 @@ namespace Capstone.Classes
 			}
 		}
 
-
+        /// <summary>
+        /// The total value of the change.
+        /// </summary>
 		public decimal Total { get; }
 
+        /// <summary>
+        /// A change object, calculates the number of quarters, dimes, and nickels
+        /// needed to make change for an input of decimal total.
+        /// </summary>
+        /// <param name="total"></param>
 		public Change(decimal total)
 		{
 			this.Total = total;

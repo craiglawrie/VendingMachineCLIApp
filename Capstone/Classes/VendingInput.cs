@@ -9,7 +9,12 @@ namespace Capstone.Classes
 {
     public class VendingInput
     {
-
+        /// <summary>
+        /// Lookup table of items and corresponding vendable item types.
+        /// Do not remove or modify items in this table. If new items are
+        /// available in input file, those items should be appended to this
+        /// dictionary.
+        /// </summary>
         private static Dictionary<string, Type> itemTypes = new Dictionary<string, Type>
         {
             {"Potato Crisps", typeof(ChipItem) },
@@ -31,6 +36,11 @@ namespace Capstone.Classes
             {"Triplemint", typeof(GumItem) }
         };
 
+        /// <summary>
+        /// Creates a dictionary of vendable items keyed by product code / "slot".
+        /// </summary>
+        /// <param name="inputFile"></param>
+        /// <returns></returns>
         public static Dictionary<string, VendableItems> RestockFromInputFile(string inputFile)
         {
             Dictionary<string, VendableItems> inventory = new Dictionary<string, VendableItems>();
