@@ -43,6 +43,10 @@ namespace Capstone.Classes
                         if (purchaseMenuInput == 3) break;
                     }
                 }
+                else if (mainMenuInput == 3)
+                {
+                    return;
+                }
             }
         }
 
@@ -228,7 +232,8 @@ namespace Capstone.Classes
                 return new string[]
                 {
                     "Display Vending Machine Items",
-                    "Purchase"
+                    "Purchase",
+                    "Quit"
                 };
             }
         }
