@@ -52,10 +52,11 @@ namespace Capstone.Classes
                 do
                 {
                     feedAmount = GetInputPositiveInteger("Enter the number of dollars to feed (ENTER when finished): $");
-                    vendingMachine.FeedMoney(feedAmount);
+                   
                     if (feedAmount != 0)
                     {
-                        Console.WriteLine($"Deposit successful. Balance: {vendingMachine.Balance.ToString("C")}");
+						vendingMachine.FeedMoney(feedAmount);
+						Console.WriteLine($"Deposit successful. Balance: {vendingMachine.Balance.ToString("C")}");
                         Console.WriteLine();
                     }
                 } while (feedAmount != 0);

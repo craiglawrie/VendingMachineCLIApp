@@ -11,6 +11,7 @@ namespace Capstone.Classes
     {
         public decimal Balance { get; private set; }
         private Dictionary<string, VendableItems> Inventory { get; } = VendingInput.RestockFromInputFile("vendingmachine.csv");
+		private TransactionLog Log { get; } = new TransactionLog();
         public string[] Slots
         {
             get
@@ -22,6 +23,7 @@ namespace Capstone.Classes
         public void FeedMoney(int dollars)
         {
             Balance += dollars;
+			Log.RecordDeposit(dollars, Balance);
         }
 
         public VendableItems GetItemAtSlot(string slot)
@@ -40,9 +42,9 @@ namespace Capstone.Classes
                 if (Balance < Inventory[slot].Cost) throw new InsufficientFundsException();
 
                 item = Inventory[slot];
-                Inventory[slot].SellOne();
-                Balance -= Inventory[slot].Cost;
-              //  Console.WriteLine(item.ConsumeMessage);//possibly remove
+                item.SellOne();
+                Balance -= item.Cost;
+				Log.RecordPurchase(slot, item.Name, Balance + item.Cost, Balance);
             }
             catch(VendingMachineException e)
             {
@@ -58,6 +60,7 @@ namespace Capstone.Classes
 		public Change ReturnChange()
 		{
 			Change change = new Change(Balance);
+			Log.RecordCompleteTransaction(Balance);
 			Balance = 0;
 			return change;
 		}
