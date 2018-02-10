@@ -38,6 +38,7 @@ namespace Capstone.Classes
 					while (true)
 					{
 						string currentBalanceString = $"Current Money Provided: {vendingMachine.Balance.ToString("C")}";
+
 						purchaseMenuInput = Menu(PurchaseMenuOptions, currentBalanceString);
 						ManagePurchaseMenu(purchaseMenuInput);
 						if (purchaseMenuInput == 3) break;
@@ -119,7 +120,7 @@ namespace Capstone.Classes
 		private string GetUserSelectedProduct()
 		{
 			Console.Write("Please enter desired selection: ");
-			return Console.ReadLine();
+			return Console.ReadLine().ToUpper();
 		}
 
 		/// <summary>
