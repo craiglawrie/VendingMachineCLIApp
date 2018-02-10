@@ -32,6 +32,7 @@ namespace Capstone.Classes
 				if (mainMenuInput == 1)
 				{
 					DisplayVendingItems();
+                    PauseOperation();
 				}
 				else if (mainMenuInput == 2)
 				{
@@ -102,23 +103,32 @@ namespace Capstone.Classes
 		{
 			VendableItems item = vendingMachine.Purchase(selection);
 			if (item != null)
-			{
-				ResponsiveYumText += item.ConsumeMessage + "\n";
-				Console.WriteLine();
-				Console.WriteLine($"Dispensing {item.Name}...");
-				Console.WriteLine();
-				Console.WriteLine("Press ENTER to continue");
-				Console.ReadLine();
-			}
-		}
+            {
+                ResponsiveYumText += item.ConsumeMessage + "\n";
+                Console.WriteLine();
+                Console.WriteLine($"Dispensing {item.Name}...");
+                Console.WriteLine();
+                PauseOperation();
+            }
+        }
 
-		/// <summary>
-		/// Gets a string input from the user, for identifying a product
-		/// by its product code / "slot".
-		/// </summary>
-		/// <returns></returns>
-		private string GetUserSelectedProduct()
+        /// <summary>
+        /// Pauses until the user presses ENTER.
+        /// </summary>
+        private static void PauseOperation()
+        {
+            Console.Write("Press ENTER to continue...");
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Gets a string input from the user, for identifying a product
+        /// by its product code / "slot".
+        /// </summary>
+        /// <returns></returns>
+        private string GetUserSelectedProduct()
 		{
+            DisplayVendingItems();
 			Console.Write("Please enter desired selection: ");
 			return Console.ReadLine().ToUpper();
 		}
@@ -136,8 +146,7 @@ namespace Capstone.Classes
 			Console.WriteLine("Please remember to take your change:");
 			Console.WriteLine($"{change.Quarters} Quarter(s), {change.Dimes} Dime(s), {change.Nickels} Nickel(s)");
 			Console.WriteLine();
-			Console.WriteLine("Press ENTER to continue");
-			Console.ReadLine();
+            PauseOperation();
 
 			ResponsiveYumText = "";
 		}
@@ -188,8 +197,6 @@ namespace Capstone.Classes
 				}
 			}
 			Console.WriteLine();
-			Console.WriteLine("Press ENTER to return to main menu");
-			Console.ReadLine();
 		}
 
 
@@ -275,8 +282,6 @@ namespace Capstone.Classes
 
 
 			Console.WriteLine();
-			Console.WriteLine("Press ENTER to return to main menu");
-			Console.ReadLine();
 		}
 
 		/// <summary>
