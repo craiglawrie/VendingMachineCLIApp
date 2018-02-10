@@ -13,8 +13,6 @@ namespace Capstone
         {
             VendingMachineCLI cli = new VendingMachineCLI("vendingmachine.csv");
             cli.Run();
-            
-            VendingSalesReport.WriteMonthlyReport("FebSalesReport.txt", "transactionLog.txt", 2);
         }
     }
 }

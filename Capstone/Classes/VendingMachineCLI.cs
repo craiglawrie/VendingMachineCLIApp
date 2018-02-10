@@ -13,6 +13,12 @@ namespace Capstone.Classes
         /// The vending machine managed and displayed by this class.
         /// </summary>
         private VendingMachine VendoMatic500 { get; }
+
+        private Action DisplayVendingItems { get; set; }
+
+        /// <summary>
+        /// The input file from which to stock the vending machine.
+        /// </summary>
         private string StockingFile { get; }
 
         /// <summary>
@@ -24,6 +30,7 @@ namespace Capstone.Classes
         {
             this.StockingFile = stockingFile;
             this.VendoMatic500 = new VendingMachine(VendingInput.RestockFromInputFile(StockingFile));
+            DisplayVendingItems = DisplayVendingItemsGrid;
         }
 
         /// <summary>
@@ -42,7 +49,7 @@ namespace Capstone.Classes
                 int mainMenuInput = Menu(MainMenuOptions, null);
                 if (mainMenuInput == 1)
                 {
-                    DisplayVendingItemsGrid();
+                    DisplayVendingItems();
                     PauseOperation();
                 }
                 else if (mainMenuInput == 2)
@@ -51,12 +58,75 @@ namespace Capstone.Classes
                 }
                 else if (mainMenuInput == 3)
                 {
-                    //ManageConfigMenu();
+                    ManageConfigMenu();
                 }
                 else if (mainMenuInput == 4)
                 {
                     break;
                 }
+            }
+        }
+
+        private void ManageConfigMenu()
+        {
+            Console.WriteLine();
+            Console.Write("Enter password (Hint: password is 1234): ");
+            string password = Console.ReadLine();
+
+            if (password == "1234")
+            {
+                int configMenuInput;
+
+                while (true)
+                {
+                    configMenuInput = Menu(ConfigMenuOptions, null);
+                    //Console.Clear();
+
+                    if (configMenuInput == 1) // TOGGLE DISPLAY BETWEEN LIST AND GRID
+                    {
+                        if (DisplayVendingItems == DisplayVendingItemsGrid)
+                        {
+                            DisplayVendingItems = DisplayVendingItemsList;
+                            Console.WriteLine("\nDisplay style was GRID. Now set to LIST.\n");
+                            PauseOperation();
+                        }
+                        else
+                        {
+                            DisplayVendingItems = DisplayVendingItemsGrid;
+                            Console.WriteLine("\nDisplay style was LIST. Now set to GRID.\n");
+                            PauseOperation();
+                        }
+                    }
+                    else if (configMenuInput == 2) // GENERATE CURRENT MONTH SALES REPORT
+                    {
+                        int month = DateTime.Now.Month;
+                        int year = DateTime.Now.Year;
+                        string reportName = Month[month] + year + "SalesReport.txt";
+                        VendingSalesReport.WriteMonthlyReport(reportName, "transactionLog.txt", month);
+                        Console.WriteLine($"\nNow generating sales report for {Month[month]} {year}...\n");
+                        PauseOperation();
+                    }
+                    else if (configMenuInput == 3) // GENERATE PRIOR MONTH SALES REPORT
+                    {
+                        DateTime date = DateTime.Now.AddMonths(-1);
+                        int month = date.Month;
+                        int year = date.Year;
+                        string reportName = Month[month] + year + "SalesReport.txt";
+                        VendingSalesReport.WriteMonthlyReport(reportName, "transactionLog.txt", month);
+                        Console.WriteLine($"\nNow generating sales report for {Month[month]} {year}...\n");
+                        PauseOperation();
+                    }
+                    else if (configMenuInput == 4)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Password is incorrect. Returning to main menu.");
+                PauseOperation();
             }
         }
 
@@ -145,7 +215,7 @@ namespace Capstone.Classes
         /// <returns></returns>
         private string GetUserSelectedProduct()
         {
-            DisplayVendingItemsGrid();
+            DisplayVendingItems();
             Console.Write("Please enter desired selection: ");
             return Console.ReadLine().ToUpper();
         }
@@ -360,5 +430,41 @@ namespace Capstone.Classes
                 };
             }
         }
+
+        /// <summary>
+        /// The array of options in the config menu.
+        /// </summary>
+        private string[] ConfigMenuOptions
+        {
+            get
+            {
+                return new string[]
+                {
+                    "Toggle Display (List / Grid)",
+                    "Generate Sales Report for Current Month-To-Date",
+                    "Generate Sales Report for Prior Month",
+                    "Return to Main Menu"
+                };
+            }
+        }
+
+        /// <summary>
+        /// Dictionary of the months of the year. Used for sales report file name.
+        /// </summary>
+        private static Dictionary<int, string> Month = new Dictionary<int, string>
+        {
+            {1, "Jan" },
+            {2, "Feb" },
+            {3, "Mar" },
+            {4, "Apr" },
+            {5, "May" },
+            {6, "Jun" },
+            {7, "Jul" },
+            {8, "Aug" },
+            {9, "Sep" },
+            {10, "Oct" },
+            {11, "Nov" },
+            {12, "Dec" }
+        };
     }
 }
