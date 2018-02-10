@@ -11,7 +11,7 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-            VendingMachineCLI cli = new VendingMachineCLI();
+            VendingMachineCLI cli = new VendingMachineCLI("vendingmachine.csv");
             cli.Run();
             
             VendingSalesReport.WriteMonthlyReport("FebSalesReport.txt", "transactionLog.txt", 2);

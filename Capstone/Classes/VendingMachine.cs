@@ -10,6 +10,16 @@ namespace Capstone.Classes
     public class VendingMachine
     {
         /// <summary>
+        /// Creates a new vending machine object stocked according to the input dictionary.
+        /// </summary>
+        /// <param name="inventory"></param>
+        public VendingMachine(Dictionary<string, VendableItems> inventory)
+        {
+            this.Inventory = inventory;
+            this.Log = new TransactionLog();
+        }
+
+        /// <summary>
         /// The current balance of deposited money. Resets to zero upon giving change (completion of the purchase menu).
         /// Increase by using FeedMoney(int dollars).
         /// </summary>
@@ -18,12 +28,12 @@ namespace Capstone.Classes
         /// <summary>
         /// Populates the inventory from the input file.
         /// </summary>
-        private Dictionary<string, VendableItems> Inventory { get; } = VendingInput.RestockFromInputFile("vendingmachine.csv");
+        private Dictionary<string, VendableItems> Inventory { get; }
 
         /// <summary>
         /// Audit transaction log handle.
         /// </summary>
-		private TransactionLog Log { get; } = new TransactionLog();
+		private TransactionLog Log { get; }
 
         /// <summary>
         /// The list of vending machine slots which have been stocked. Includes "sold out" items.

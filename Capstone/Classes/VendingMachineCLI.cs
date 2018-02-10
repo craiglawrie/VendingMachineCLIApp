@@ -12,13 +12,25 @@ namespace Capstone.Classes
 		/// <summary>
 		/// The vending machine managed and displayed by this class.
 		/// </summary>
-		private VendingMachine vendingMachine = new VendingMachine();
+		private VendingMachine VendoMatic500 { get; }
+        private string StockingFile { get; }
 
-		/// <summary>
-		/// A string used for displaying "consume messages" only when the transaction is closed
-		/// and change is given.
-		/// </summary>
-		private string ResponsiveYumText { get; set; }
+        /// <summary>
+        /// Creates a new vending machine CLI for a vending machine that will be stocked according to the provided
+        /// input file.
+        /// </summary>
+        /// <param name="stockingFile"></param>
+        public VendingMachineCLI(string stockingFile)
+        {
+            this.StockingFile = stockingFile;
+            this.VendoMatic500 = new VendingMachine(VendingInput.RestockFromInputFile(StockingFile));
+        }
+
+        /// <summary>
+        /// A string used for displaying "consume messages" only when the transaction is closed
+        /// and change is given.
+        /// </summary>
+        private string ResponsiveYumText { get; set; }
 
 		/// <summary>
 		/// Begins the vending machine processes.
@@ -38,7 +50,7 @@ namespace Capstone.Classes
 				{
 					while (true)
 					{
-						string currentBalanceString = $"Current Money Provided: {vendingMachine.Balance.ToString("C")}";
+						string currentBalanceString = $"Current Money Provided: {VendoMatic500.Balance.ToString("C")}";
 
 						purchaseMenuInput = Menu(PurchaseMenuOptions, currentBalanceString);
 						ManagePurchaseMenu(purchaseMenuInput);
@@ -71,7 +83,7 @@ namespace Capstone.Classes
 			}
 			else if (purchaseMenuInput == 3) // FINISH TRANSACTION
 			{
-				Change change = vendingMachine.ReturnChange();
+				Change change = VendoMatic500.ReturnChange();
 				WriteChangeMessage(change);
 			}
 		}
@@ -88,8 +100,8 @@ namespace Capstone.Classes
 
 				if (feedAmount != 0)
 				{
-					vendingMachine.FeedMoney(feedAmount);
-					Console.WriteLine($"Deposit successful. Balance: {vendingMachine.Balance.ToString("C")}");
+					VendoMatic500.FeedMoney(feedAmount);
+					Console.WriteLine($"Deposit successful. Balance: {VendoMatic500.Balance.ToString("C")}");
 					Console.WriteLine();
 				}
 			} while (feedAmount != 0);
@@ -101,7 +113,7 @@ namespace Capstone.Classes
 		/// <param name="selection">The user input product code / "slot".</param>
 		private void ProcessPurchaseOfSelectedProduct(string selection)
 		{
-			VendableItems item = vendingMachine.Purchase(selection);
+			VendableItems item = VendoMatic500.Purchase(selection);
 			if (item != null)
             {
                 ResponsiveYumText += item.ConsumeMessage + "\n";
@@ -181,10 +193,10 @@ namespace Capstone.Classes
 		{
 			Console.Clear();
 
-			string[] slots = vendingMachine.Slots;
+			string[] slots = VendoMatic500.Slots;
 			foreach (string slot in slots)
 			{
-				VendableItems item = vendingMachine.GetItemAtSlot(slot);
+				VendableItems item = VendoMatic500.GetItemAtSlot(slot);
 				if (item.AmountRemaining > 0)
 				{
 					Console.WriteLine($"{slot,-4} {item.Name,-19} ${item.Cost}");
@@ -208,7 +220,7 @@ namespace Capstone.Classes
 		{
 			Console.Clear();
 
-			string[] slots = vendingMachine.Slots;
+			string[] slots = VendoMatic500.Slots;
 			Console.WriteLine("----------------------------------------------------------------------------------------");
 			foreach (char c in "ABCD".ToCharArray())
 			{
@@ -219,7 +231,7 @@ namespace Capstone.Classes
 				{
 					string address = c.ToString() + s.ToString();
 
-					VendableItems item = vendingMachine.GetItemAtSlot(address);
+					VendableItems item = VendoMatic500.GetItemAtSlot(address);
 					
 
 					if (item.AmountRemaining > 0)
@@ -241,7 +253,7 @@ namespace Capstone.Classes
 				{
 					string address = c.ToString() + s.ToString();
 
-					VendableItems item = vendingMachine.GetItemAtSlot(address);
+					VendableItems item = VendoMatic500.GetItemAtSlot(address);
 					
 					if (item.AmountRemaining > 0)
 					{
@@ -262,7 +274,7 @@ namespace Capstone.Classes
 				{
 					string address = c.ToString() + s.ToString();
 
-					VendableItems item = vendingMachine.GetItemAtSlot(address);
+					VendableItems item = VendoMatic500.GetItemAtSlot(address);
 					if (item.AmountRemaining > 0)
 					{
 						Console.Write($"|  {item.Cost.ToString("C"),-18}|");
