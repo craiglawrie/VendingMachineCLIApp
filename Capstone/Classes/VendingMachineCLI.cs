@@ -31,6 +31,7 @@ namespace Capstone.Classes
             this.StockingFile = stockingFile;
             this.VendoMatic500 = new VendingMachine(VendingInput.RestockFromInputFile(StockingFile));
             DisplayVendingItems = DisplayVendingItemsGrid;
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         /// <summary>
@@ -102,8 +103,9 @@ namespace Capstone.Classes
                         int month = DateTime.Now.Month;
                         int year = DateTime.Now.Year;
                         string reportName = Month[month] + year + "SalesReport.txt";
+                        Console.Write($"\nNow generating sales report for {Month[month]} {year}...");
                         VendingSalesReport.WriteMonthlyReport(reportName, "transactionLog.txt", month);
-                        Console.WriteLine($"\nNow generating sales report for {Month[month]} {year}...\n");
+                        Console.WriteLine($"Done!\n");
                         PauseOperation();
                     }
                     else if (configMenuInput == 3) // GENERATE PRIOR MONTH SALES REPORT
@@ -112,8 +114,9 @@ namespace Capstone.Classes
                         int month = date.Month;
                         int year = date.Year;
                         string reportName = Month[month] + year + "SalesReport.txt";
+                        Console.Write($"\nNow generating sales report for {Month[month]} {year}...");
                         VendingSalesReport.WriteMonthlyReport(reportName, "transactionLog.txt", month);
-                        Console.WriteLine($"\nNow generating sales report for {Month[month]} {year}...\n");
+                        Console.WriteLine($"Done!\n");
                         PauseOperation();
                     }
                     else if (configMenuInput == 4)
