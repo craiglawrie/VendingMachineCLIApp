@@ -9,6 +9,10 @@ namespace Capstone.Classes
 {
     public class VendingInput
     {
+        private const int Col_SlotId = 0;
+        private const int Col_Name = 1;
+        private const int Col_Cost = 2;
+
         /// <summary>
         /// Lookup table of items and corresponding vendable item types.
         /// Do not remove or modify items in this table. If new items are
@@ -52,10 +56,10 @@ namespace Capstone.Classes
                     while (!sr.EndOfStream)
                     {
                         string[] itemDetails = sr.ReadLine().Split('|');
-                        Type type = itemTypes[itemDetails[1]];
-                        Object item = Activator.CreateInstance(type, new object[] { itemDetails[0], itemDetails[1], decimal.Parse(itemDetails[2]) });
+                        Type type = itemTypes[itemDetails[Col_Name]];
+                        Object item = Activator.CreateInstance(type, new object[] { itemDetails[Col_SlotId], itemDetails[Col_Name], decimal.Parse(itemDetails[Col_Cost]) });
 
-                        inventory[itemDetails[0]] = (VendableItems)item;
+                        inventory[itemDetails[Col_SlotId]] = (VendableItems)item;
                     }
                 }
             }

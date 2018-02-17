@@ -8,6 +8,19 @@ namespace CapstoneTests
     [TestClass]
     public class VendingMachineTests
     {
+
+        [TestMethod]
+        [TestCategory("Vending Machine")]
+        [ExpectedException(typeof(InvalidSlotException))]
+        public void Purchase_ThrowsInvalidSlotException()
+        {
+            Dictionary<string, VendableItems> inventory = new Dictionary<string, VendableItems>();
+            VendingMachine vm = new VendingMachine(inventory);
+
+            vm.Purchase("FAKE_SLOT");
+        }
+
+
         [TestMethod]
         [TestCategory("Vending Machine")]
         public void OneItemInInventory_ReturnsKeysListCorrectly()

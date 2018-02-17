@@ -26,19 +26,8 @@ namespace Capstone.Classes
         /// <param name="finalBalance"></param>
 		public void RecordDeposit(decimal amount, decimal finalBalance)
 		{
-			try
-			{
-				using (StreamWriter sw = new StreamWriter(FilePath, true))
-				{
-					string actionStamp = CurrentDate + " FEED MONEY:";
-					sw.WriteLine($"{actionStamp,-50} {amount.ToString("C"),-10} {finalBalance.ToString("C")}");
-				}
-			}
-			catch (IOException e)
-			{
-				Console.WriteLine("Error occured");
-				Console.WriteLine(e.Message);
-			}
+            string actionStamp = CurrentDate + " FEED MONEY:";
+            WriteToFile($"{actionStamp,-50} {amount.ToString("C"),-10} {finalBalance.ToString("C")}");           
 		}
 
         /// <summary>
@@ -50,19 +39,8 @@ namespace Capstone.Classes
         /// <param name="finalBalance"></param>
 		public void RecordPurchase(string slot, string product, decimal initialBalance, decimal finalBalance)
 		{
-			try
-			{
-				using (StreamWriter sw = new StreamWriter(FilePath, true))
-				{
-					string actionStamp = CurrentDate + " " + product + " " + slot;
-					sw.WriteLine($"{actionStamp,-50} {initialBalance.ToString("C"),-10} {finalBalance.ToString("C")}");
-				}
-			}
-			catch (IOException e)
-			{
-				Console.WriteLine("Error occured");
-				Console.WriteLine(e.Message);
-			}
+            string actionStamp = CurrentDate + " " + product + " " + slot;
+            WriteToFile($"{actionStamp,-50} {initialBalance.ToString("C"),-10} {finalBalance.ToString("C")}");            
 		}
 
         /// <summary>
@@ -71,20 +49,26 @@ namespace Capstone.Classes
         /// <param name="remainingBalance"></param>
 		public void RecordCompleteTransaction(decimal remainingBalance)
 		{
-			try
-			{
-				using (StreamWriter sw = new StreamWriter(FilePath, true))
-				{
-					string actionStamp = CurrentDate + " GIVE CHANGE: ";
-					decimal finalBalance = 0M;
-					sw.WriteLine($"{actionStamp,-50} {remainingBalance.ToString("C"),-10} {finalBalance.ToString("C")}");
-				}
-			}
-			catch (IOException e)
-			{
-				Console.WriteLine("Error occured");
-				Console.WriteLine(e.Message);
-			}
+            string actionStamp = CurrentDate + " GIVE CHANGE: ";
+            decimal finalBalance = 0M;
+            WriteToFile($"{actionStamp,-50} {remainingBalance.ToString("C"),-10} {finalBalance.ToString("C")}");            
 		}
-	}
+
+
+        private void WriteToFile(string message)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(FilePath, true))
+                {
+                    sw.WriteLine(message);
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("Error occured");
+                Console.WriteLine(e.Message);
+            }
+        }
+    }
 }

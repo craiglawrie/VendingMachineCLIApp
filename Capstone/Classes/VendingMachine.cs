@@ -45,7 +45,7 @@ namespace Capstone.Classes
                 return Inventory.Keys.ToArray();
             }
         }
-        
+
         /// <summary>
         /// Allows the user to increase the balance by depositing an integer number of dollars into the machine.
         /// </summary>
@@ -53,7 +53,7 @@ namespace Capstone.Classes
         public void FeedMoney(int dollars)
         {
             Balance += dollars;
-			Log.RecordDeposit(dollars, Balance);
+            Log.RecordDeposit(dollars, Balance);
         }
 
         /// <summary>
@@ -76,24 +76,25 @@ namespace Capstone.Classes
         {
             VendableItems item = null;
 
-            try
+            if (!Inventory.ContainsKey(slot))
             {
-                if (!Inventory.ContainsKey(slot)) throw new InvalidSlotException();
-                if (Inventory[slot].AmountRemaining == 0) throw new OutOfStockException();
-                if (Balance < Inventory[slot].Cost) throw new InsufficientFundsException();
+                throw new InvalidSlotException();
+            }
 
-                item = Inventory[slot];
-                item.SellOne();
-                Balance -= item.Cost;
-				Log.RecordPurchase(slot, item.Name, Balance + item.Cost, Balance);
-            }
-            catch(VendingMachineException e)
+            if (Inventory[slot].AmountRemaining == 0)
             {
-                Console.WriteLine(e.Message);
-				Console.WriteLine();
-				Console.WriteLine("Press ENTER to continue");
-				Console.ReadLine();
+                throw new OutOfStockException();
             }
+
+            if (Balance < Inventory[slot].Cost)
+            {
+                throw new InsufficientFundsException();
+            }
+
+            item = Inventory[slot];
+            item.SellOne();
+            Balance -= item.Cost;
+            Log.RecordPurchase(slot, item.Name, Balance + item.Cost, Balance);
 
             return item;
         }
@@ -104,11 +105,13 @@ namespace Capstone.Classes
         /// </summary>
         /// <returns></returns>
 		public Change ReturnChange()
-		{
-			Change change = new Change(Balance);
-			Log.RecordCompleteTransaction(Balance);
-			Balance = 0;
-			return change;
-		}
-	}
+        {
+            Change change = new Change(Balance);
+            Log.RecordCompleteTransaction(Balance);
+
+            Balance = 0;
+
+            return change;
+        }
+    }
 }

@@ -31,6 +31,7 @@ namespace Capstone.Classes
             this.StockingFile = stockingFile;
             this.VendoMatic500 = new VendingMachine(VendingInput.RestockFromInputFile(StockingFile));
             DisplayVendingItems = DisplayVendingItemsGrid;
+
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -161,8 +162,9 @@ namespace Capstone.Classes
                 {
                     Change change = VendoMatic500.ReturnChange();
                     WriteChangeMessage(change);
-                }
-                if (purchaseMenuInput == 3) break;
+
+                    break;
+                }                
             }
         }
 
@@ -191,14 +193,25 @@ namespace Capstone.Classes
         /// <param name="selection">The user input product code / "slot".</param>
         private void ProcessPurchaseOfSelectedProduct(string selection)
         {
-            VendableItems item = VendoMatic500.Purchase(selection);
-            if (item != null)
+
+            try
             {
-                ResponsiveYumText += item.ConsumeMessage + "\n";
+                VendableItems item = VendoMatic500.Purchase(selection);
+                if (item != null)
+                {
+                    ResponsiveYumText += item.ConsumeMessage + "\n";
+                    Console.WriteLine();
+                    Console.WriteLine($"Dispensing {item.Name}...");
+                    Console.WriteLine();
+                    PauseOperation();
+                }
+            }
+            catch(VendingMachineException e)
+            {
+                Console.WriteLine(e.Message);
                 Console.WriteLine();
-                Console.WriteLine($"Dispensing {item.Name}...");
-                Console.WriteLine();
-                PauseOperation();
+                Console.WriteLine("Press ENTER to continue");
+                Console.ReadLine();
             }
         }
 
@@ -388,7 +401,10 @@ namespace Capstone.Classes
                 Console.WriteLine($"({i + 1}) {menuOptions[i]}");
             }
 
-            if (!string.IsNullOrEmpty(extraString)) Console.WriteLine(extraString);
+            if (!string.IsNullOrEmpty(extraString))
+            {
+                Console.WriteLine(extraString);
+            }
 
             Console.WriteLine();
 
